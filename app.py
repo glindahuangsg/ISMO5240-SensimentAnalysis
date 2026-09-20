@@ -1,38 +1,139 @@
 import streamlit as st
 from transformers import pipeline
 
-# Title and description
-st.title("Sentiment Analysis App")
-st.write("Analyze the sentiment of your text using Hugging Face Transformers.")
+# Page Configuration with a fun icon
+st.set_page_config(
+    page_title="Magic Feeling Finder!",
+    page_icon="🌈",
+    layout="centered"
+)
 
-# Cache the model loading so it doesn't reload on every interaction
+# Custom CSS for bright, child-friendly styling
+st.markdown("""
+    <style>
+    /* Main Background Gradient */
+    .stApp {
+        background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
+    }
+
+    /* Primary Container Card */
+    .block-container {
+        background-color: rgba(255, 255, 255, 0.85);
+        padding: 2.5rem;
+        border-radius: 25px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        margin-top: 2rem;
+    }
+
+    /* Playful Title Styling */
+    h1 {
+        color: #FF3B00;
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+        text-align: center;
+        font-size: 2.8rem;
+    }
+
+    /* Subheadings */
+    p, label {
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+        font-size: 1.1rem;
+    }
+
+    /* Custom Input Box */
+    .stTextArea textarea {
+        border: 3px solid #FF8E53 !important;
+        border-radius: 15px !important;
+        font-size: 1.2rem !important;
+        background-color: #FFFDF0 !important;
+    }
+
+    /* Magic Button Styling */
+    div.stButton > button {
+        background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+        color: white !important;
+        font-size: 1.5rem !important;
+        font-weight: bold;
+        border-radius: 50px !important;
+        border: none !important;
+        padding: 0.8rem 2rem !important;
+        width: 100%;
+        box-shadow: 0 6px 15px rgba(255, 107, 107, 0.4);
+        transition: transform 0.2s ease;
+    }
+
+    div.stButton > button:hover {
+        transform: scale(1.03);
+    }
+
+    /* Fun Result Cards */
+    .happy-box {
+        background-color: #D4EDDA;
+        border: 3px solid #28A745;
+        border-radius: 20px;
+        padding: 1.5rem;
+        text-align: center;
+        color: #155724;
+        font-family: 'Comic Sans MS', sans-serif;
+    }
+
+    .sad-box {
+        background-color: #FFF3CD;
+        border: 3px solid #FFC107;
+        border-radius: 20px;
+        padding: 1.5rem;
+        text-align: center;
+        color: #856404;
+        font-family: 'Comic Sans MS', sans-serif;
+    }
+    </style>
+""", unsafe_allow_shortcut=True)
+
+# Cache model loading with a friendly spinner message
 @st.cache_resource
 def load_sentiment_pipeline():
     return pipeline("sentiment-analysis")
 
-sentiment_pipeline = load_sentiment_pipeline()
+with st.spinner("🧙‍♂️ Awakening the Magic Feeling Wizard..."):
+    sentiment_pipeline = load_sentiment_pipeline()
 
-# User input text area
+# Header Section
+st.title("🌈 Magic Feeling Finder! ✨")
+st.write("### Type or paste your story below to find out its mood power! 🪄")
+
+# Input text area
 text_input = st.text_area(
-    "Enter Text:",
-    value="Deep Learning (DL) represents a highly promising approach to developing applications in Artificial Intelligence (AI).",
-    height=150,
+    "What's on your mind today?",
+    value="I love going to the park with my dog and eating delicious ice cream!",
+    height=140
 )
 
-# Analyze button
-if st.button("Analyze Sentiment"):
+# Magic Analyze Button
+if st.button("✨ Check My Feeling! ✨"):
     if text_input.strip():
         result = sentiment_pipeline(text_input)
         label = result[0]["label"]
         score = result[0]["score"]
+        percent = int(score * 100)
 
-        # Display results
-        st.write("---")
-        st.subheader("Result")
-        
+        st.write("")  # Spacing
+
         if label == "POSITIVE":
-            st.success(f"**Sentiment:** {label} | **Score:** {score:.4f}")
+            st.markdown(f"""
+                <div class="happy-box">
+                    <h1>🥳 SUPER HAPPY! 🎉</h1>
+                    <h3>This text is full of sunshine and good vibes! ☀️</h3>
+                    <p style="font-size: 1.3rem;"><b>Happiness Meter:</b> {percent}% Pure Magic!</p>
+                </div>
+            """, unsafe_allow_shortcut=True)
+            st.balloons()
         else:
-            st.error(f"**Sentiment:** {label} | **Score:** {score:.4f}")
+            st.markdown(f"""
+                <div class="sad-box">
+                    <h1>💙 A LITTLE BLUE OR SAD 🌧️</h1>
+                    <h3>This text feels a bit sleepy, upset, or worried.</h3>
+                    <p style="font-size: 1.3rem;"><b>Blue Meter:</b> {percent}% Feeling Strength</p>
+                </div>
+            """, unsafe_allow_shortcut=True)
+            st.snow()
     else:
-        st.warning("Please enter some text to analyze.")
+        st.warning("🎈 Oopsie! Please type a sentence first before clicking the magic button!")
