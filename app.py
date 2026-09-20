@@ -3,7 +3,7 @@ from transformers import pipeline
 
 # Page Configuration with a fun icon
 st.set_page_config(
-    page_title="Magic Feeling Finder!",
+    page_title="ISMO5240: Magic Feeling Finder!",
     page_icon="🌈",
     layout="centered"
 )
