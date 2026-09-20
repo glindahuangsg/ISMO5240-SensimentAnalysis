@@ -86,7 +86,7 @@ st.markdown("""
         font-family: 'Comic Sans MS', sans-serif;
     }
     </style>
-""", unsafe_allow_shortcut=True)
+""", unsafe_allow_html=True)
 
 # Cache model loading with a friendly spinner message
 @st.cache_resource
@@ -124,7 +124,7 @@ if st.button("✨ Check My Feeling! ✨"):
                     <h3>This text is full of sunshine and good vibes! ☀️</h3>
                     <p style="font-size: 1.3rem;"><b>Happiness Meter:</b> {percent}% Pure Magic!</p>
                 </div>
-            """, unsafe_allow_shortcut=True)
+            """, unsafe_allow_html=True)
             st.balloons()
         else:
             st.markdown(f"""
@@ -133,7 +133,7 @@ if st.button("✨ Check My Feeling! ✨"):
                     <h3>This text feels a bit sleepy, upset, or worried.</h3>
                     <p style="font-size: 1.3rem;"><b>Blue Meter:</b> {percent}% Feeling Strength</p>
                 </div>
-            """, unsafe_allow_shortcut=True)
+            """, unsafe_allow_html=True)
             st.snow()
     else:
         st.warning("🎈 Oopsie! Please type a sentence first before clicking the magic button!")
